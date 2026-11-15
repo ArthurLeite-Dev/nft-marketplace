@@ -1,7 +1,14 @@
+import { RouterProvider } from '@tanstack/react-router'
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './query-client'
+import { createAppRouter } from './router'
+
+const router = createAppRouter()
+
 export default function App() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-2xl font-bold text-primary">NFT Marketplace</h1>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   )
 }
