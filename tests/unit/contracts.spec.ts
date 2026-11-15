@@ -88,11 +88,8 @@ test.describe('Zod Contracts & API Error Handling', () => {
           artwork: { url: '/img.webp', alt: 'Alt' },
         },
       ],
-      coupon: {
-        code: 'JUNGLE10',
-        discountPercent: 10,
-        discountBasisPoints: 1000,
-      },
+      couponCode: 'JUNGLE10',
+      couponDiscountBp: 1000,
       network: 'Ethereum',
       totals: {
         subtotalEth: '3.0',
