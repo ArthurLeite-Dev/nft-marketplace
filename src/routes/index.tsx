@@ -206,7 +206,7 @@ function CatalogPage() {
         </div>
       </div>
 
-      <main id="main-content" className="flex-1 px-4 py-8 max-w-7xl mx-auto">
+      <div className="flex-1 px-4 py-8 max-w-7xl mx-auto">
         <div className="flex flex-col lg:flex-row gap-6">
           <aside className="lg:w-64 flex-shrink-0 space-y-6">
             <section className="space-y-4">
@@ -382,7 +382,7 @@ function CatalogPage() {
             )}
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }

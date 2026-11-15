@@ -142,8 +142,8 @@ export function getFacets() {
       .map(([name, count]) => ({ name, count }))
       .sort((a, b) => a.name.localeCompare(b.name)),
     priceRange: {
-      min: prices.length ? Math.min(...prices) : 0,
-      max: prices.length ? Math.max(...prices) : 0,
+      min: prices.length ? Math.min(...prices).toFixed(2) : '0',
+      max: prices.length ? Math.max(...prices).toFixed(2) : '0',
     },
   }
 }

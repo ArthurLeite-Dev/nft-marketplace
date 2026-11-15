@@ -11,10 +11,16 @@ O que existe:
 - Scaffold Vite 8 + React 19 + TypeScript 6, Tailwind CSS 4, shadcn/ui (Radix)
 - `src/api/*`: cliente Axios com interceptores (Authorization, X-Cart-Id, X-Mock-Scenario), `apiRequest` com validação zod, `ApiError` tipado, `API_PATHS` de todos os recursos
 - `src/lib/*`: `eth.ts` (bigint/wei), `form-validators.ts`, `safe-redirect.ts`, `announce.ts`, `utils.ts`, `use-document-title.ts`
-- `src/app/*`: `query-client.ts` (staleTime 30s, gcTime 5m, retry só retryable, mutations sem retry), `router.ts`, `App.tsx`, `use-route-focus.ts`
-- `src/routes/__root.tsx` (shell com header, footer, skip link, live region, toaster, 404 e error), `index.tsx` (stub), `nft.$nftId.tsx` (stub)
+- `src/app/*`: `query-client.ts` (staleTime 30s, gcTime 5m, retry só retryable, mutations sem retry), `router.ts`, `App.tsx`, `use-route-focus.ts`, `auth.tsx` (AuthProvider com login/cadastro/logout/restauração de sessão e token persistido em localStorage)
+- `src/routes/__root.tsx` (shell com header, footer, skip link, live region, toaster, 404 e error)
+- `index.tsx` (catálogo integrado: busca, filtros de coleção/rede/preço, abas new/trending, ordenação, paginação, estado na URL via TanStack Router useSearch, annunciante de acessibilidade)
+- `nft.$nftId.tsx` (detalhe integrado: galeria, seleção de edição, quantidade com stepper, preço total, favorito otimista com rollback, adicionar ao carrinho, NFTs relacionados)
 - Novas rotas stub: `carrinho.tsx`, `pagamento.tsx`, `pedidos.$orderId.tsx`, `entrar.tsx`, `cadastro.tsx`, `conta.tsx` (+ index/perfil/carteiras/favoritos), `aprenda.tsx`, `criadores.tsx`
 - `src/components/ui/*` (14 shadcn), `components/common/*`, `components/layout/*`
+- `src/features/catalog/useCatalog.ts` (hook TanStack Query para listagem)
+- `src/features/nft/useNft.ts` (hooks TanStack Query para detalhe e relacionados)
+- `src/features/cart/useCart.ts` (mutations TanStack Query para adicionar/atualizar/remover item com invalidação de cache)
+- `src/features/favorites/useFavorite.ts` (mutation otimista com rollback via onMutate/onError e invalidação)
 - `src/mocks/*`: MSW real com banco simulado (localStorage/memória), fixtures (36 NFTs, 2 usuários), cenários (16), respond, domínio (sessão, catálogo, carrinho, checkout, conta), handlers REST completos, controle (`__mock`), browser.ts. `public/mockServiceWorker.js` gerado.
 - `src/mocks/db/types.ts`, `src/mocks/db/store.ts` (banco, diff, relógio, cenários)
 - `src/mocks/fixtures/{nfts,users,index}.ts` (NFTs, usuários ana/bruno, cupons, taxas de rede)
@@ -29,9 +35,13 @@ O que existe:
 - `STATUS_CONTINUIDADE.md` (este documento)
 
 O que falta (não implementado):
-- Integração das rotas stub com os handlers/MSW (componentes e hooks de negócio ainda não consomem a API)
-- `src/app/session-sync.ts`, `src/app/realtime.ts`
-- TanStack Query hooks, mutations, otimista com rollback
+- Rotas de autenticação (`entrar`, `cadastro`) integradas ao AuthProvider (formulários e validação)
+- Rota `carrinho` integrada (lista, alterar quantidade, remover, cupom, totais, disponibilidade)
+- Rota `pagamento` integrada (validação, seleção de carteira/rede, cotação, revalidação, prevenção de duplicidade)
+- Rota `pedidos.$orderId` integrada (recibo, snapshot, estados pendente/confirmado/recusado)
+- Rotas `conta.*` integradas (perfil, avatar, senha, carteiras)
+- `src/app/session-sync.ts`, `src/app/realtime.ts` (cliente Socket.IO via MSW)
+- Idempotência de pedido na camada de negócio/UI (chave Idempotency-Key)
 - Testes E2E dos 11 grupos restantes; Lighthouse; README; ARCHITECTURE.md; assets de NFT
 
 Não há respostas fictícias fora de `src/mocks`.
