@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-15T06:08:31.921Z",
+  "generatedAt": "2026-11-15T18:02:38.931Z",
   "thresholds": {
     "performance": 90,
     "accessibility": 95,
@@ -17,57 +17,57 @@
           "profile": "desktop",
           "url": "http://localhost:4176/",
           "categories": {
-            "performance": 91,
+            "performance": 92,
             "accessibility": 91,
             "best-practices": 100,
             "seo": 100
           },
           "metrics": {
-            "lcp": 711.16275,
-            "cls": 0.1927949777695404,
+            "lcp": 727.53575,
+            "cls": 0.17304449658462423,
             "tbt": 0,
-            "fcp": 533.7302,
-            "si": 533.7302
+            "fcp": 546.4286,
+            "si": 546.4286
           },
-          "timestamp": "2026-11-15T06:07:18.147Z"
+          "timestamp": "2026-11-15T18:01:21.270Z"
         },
         {
           "measurement": 2,
           "profile": "desktop",
           "url": "http://localhost:4176/",
           "categories": {
-            "performance": 91,
+            "performance": 92,
             "accessibility": 91,
             "best-practices": 100,
             "seo": 100
           },
           "metrics": {
-            "lcp": 697.00025,
-            "cls": 0.1927949777695404,
+            "lcp": 707.92075,
+            "cls": 0.1775304570130034,
             "tbt": 0,
-            "fcp": 521.6002000000001,
-            "si": 521.6002000000001
+            "fcp": 529.9366,
+            "si": 529.9366
           },
-          "timestamp": "2026-11-15T06:07:31.367Z"
+          "timestamp": "2026-11-15T18:01:34.918Z"
         },
         {
           "measurement": 3,
           "profile": "desktop",
           "url": "http://localhost:4176/",
           "categories": {
-            "performance": 91,
+            "performance": 92,
             "accessibility": 91,
             "best-practices": 100,
             "seo": 100
           },
           "metrics": {
-            "lcp": 698.6487500000001,
-            "cls": 0.1927949777695404,
+            "lcp": 694.8362500000001,
+            "cls": 0.1775304570130034,
             "tbt": 0,
-            "fcp": 522.9190000000001,
-            "si": 522.9190000000001
+            "fcp": 520.269,
+            "si": 520.269
           },
-          "timestamp": "2026-11-15T06:07:44.592Z"
+          "timestamp": "2026-11-15T18:01:48.432Z"
         }
       ],
       "median": {
@@ -75,19 +75,19 @@
         "profile": "desktop",
         "url": "http://localhost:4176/",
         "categories": {
-          "performance": 91,
+          "performance": 92,
           "accessibility": 91,
           "best-practices": 100,
           "seo": 100
         },
         "metrics": {
-          "lcp": 698.6487500000001,
-          "cls": 0.1927949777695404,
+          "lcp": 707.92075,
+          "cls": 0.1775304570130034,
           "tbt": 0,
-          "fcp": 522.9190000000001,
-          "si": 522.9190000000001
+          "fcp": 529.9366,
+          "si": 529.9366
         },
-        "timestamp": "2026-11-15T06:07:18.147Z"
+        "timestamp": "2026-11-15T18:01:21.270Z"
       }
     },
     {
@@ -100,57 +100,57 @@
           "profile": "desktop",
           "url": "http://localhost:4176/nft/nft_01",
           "categories": {
-            "performance": 75,
-            "accessibility": 96,
-            "best-practices": 96,
+            "performance": 100,
+            "accessibility": 89,
+            "best-practices": 100,
             "seo": 100
           },
           "metrics": {
-            "lcp": 662.2367499999999,
-            "cls": 0.9706930916636994,
+            "lcp": 672.35575,
+            "cls": 0.019373048455298678,
             "tbt": 0,
-            "fcp": 225.29469999999998,
-            "si": 438.07865674960794
+            "fcp": 228.14229999999998,
+            "si": 458.28738308619575
           },
-          "timestamp": "2026-11-15T06:08:01.940Z"
+          "timestamp": "2026-11-15T18:02:07.015Z"
         },
         {
           "measurement": 2,
           "profile": "desktop",
           "url": "http://localhost:4176/nft/nft_01",
           "categories": {
-            "performance": 75,
-            "accessibility": 96,
-            "best-practices": 96,
+            "performance": 100,
+            "accessibility": 89,
+            "best-practices": 100,
             "seo": 100
           },
           "metrics": {
-            "lcp": 660.1505,
-            "cls": 0.9706930916636994,
+            "lcp": 660.47975,
+            "cls": 0.019373048455298678,
             "tbt": 0,
-            "fcp": 224.4602,
-            "si": 420.15678307484467
+            "fcp": 345.7919,
+            "si": 444.8108819186835
           },
-          "timestamp": "2026-11-15T06:08:14.656Z"
+          "timestamp": "2026-11-15T18:02:20.477Z"
         },
         {
           "measurement": 3,
           "profile": "desktop",
           "url": "http://localhost:4176/nft/nft_01",
           "categories": {
-            "performance": 75,
-            "accessibility": 96,
-            "best-practices": 96,
+            "performance": 100,
+            "accessibility": 89,
+            "best-practices": 100,
             "seo": 100
           },
           "metrics": {
-            "lcp": 662.244,
-            "cls": 0.9706930916636994,
+            "lcp": 650.75125,
+            "cls": 0.019373048455298678,
             "tbt": 0,
-            "fcp": 225.0976,
-            "si": 426.67054341940025
+            "fcp": 220.3005,
+            "si": 452.72093493064443
           },
-          "timestamp": "2026-11-15T06:08:27.355Z"
+          "timestamp": "2026-11-15T18:02:33.902Z"
         }
       ],
       "median": {
@@ -158,19 +158,19 @@
         "profile": "desktop",
         "url": "http://localhost:4176/nft/nft_01",
         "categories": {
-          "performance": 75,
-          "accessibility": 96,
-          "best-practices": 96,
+          "performance": 100,
+          "accessibility": 89,
+          "best-practices": 100,
           "seo": 100
         },
         "metrics": {
-          "lcp": 662.2367499999999,
-          "cls": 0.9706930916636994,
+          "lcp": 660.47975,
+          "cls": 0.019373048455298678,
           "tbt": 0,
-          "fcp": 225.0976,
-          "si": 426.67054341940025
+          "fcp": 228.14229999999998,
+          "si": 452.72093493064443
         },
-        "timestamp": "2026-11-15T06:08:01.940Z"
+        "timestamp": "2026-11-15T18:02:07.015Z"
       }
     }
   ]
