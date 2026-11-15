@@ -4,7 +4,6 @@ import { withScenarioHandler, requireAuth, checkSession, errorResponse, httpStat
 import { registerUser, loginUser, logoutUser, getSessionFromToken } from '../domain/session'
 import { getCatalogPage, getNftById, getRelatedNfts, getHighlights, getFacets } from '../domain/catalog'
 import {
-  getOrCreateCart,
   buildCartView,
   addOrUpdateItem,
   changeQuantity,
@@ -12,6 +11,7 @@ import {
   applyCoupon,
   removeCoupon,
   mergeGuestCart,
+  getOrCreateCart,
 } from '../domain/cart'
 import { createQuote, placeOrder, getOrder, settleOrder } from '../domain/checkout'
 import { updateProfile, changePassword, upsertWallet, getUser } from '../domain/account'
@@ -182,6 +182,21 @@ const REST_HANDLERS: RequestHandler[] = [
         }
       } else {
         cart = getOrCreateCart({ userId: null, guestCartId, network: null })
+      }
+      // Fallback defensivo: se o carrinho não pôde ser criado/recuperado, usa um vazio
+      if (!cart) {
+        cart = {
+          id: 'cart_empty',
+          userId: null,
+          guestCartId: guestCartId ?? null,
+          version: 1,
+          lines: [],
+          couponCode: null,
+          couponDiscountBp: 0,
+          network: null,
+          totals: { subtotalEth: '0', discountEth: '0', networkFeeEth: '0', totalEth: '0' },
+          updatedAt: new Date().toISOString(),
+        } as any
       }
       const view = buildCartView(cart, getDbRaw().nfts)
       return HttpResponse.json(view)

@@ -34,7 +34,7 @@ function readDb(): DbSchema {
     return JSON.parse(raw) as DbSchema
   }
   if (!memoryDb) throw new Error('Banco simulado não inicializado')
-  return deepClone(memoryDb)
+  return memoryDb
 }
 
 function writeDb(next: DbSchema): void {

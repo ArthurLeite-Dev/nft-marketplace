@@ -53,7 +53,7 @@ function CartPage() {
     )
   }
 
-  if (isPending) {
+  if (isPending || !cart || !cart.lines) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="flex flex-col gap-4">
@@ -68,6 +68,7 @@ function CartPage() {
   const lines = cart?.lines ?? []
   const hasBlocked = lines.some((l) => l.status !== 'available')
   const hasUnavailable = lines.some((l) => l.status === 'unavailable')
+  const cartTotals = cart?.totals ?? { subtotalEth: '0', discountEth: '0', networkFeeEth: '0', totalEth: '0' }
 
   const onChangeQty = (lineId: string, qty: number) => {
     updateQuantity.mutate({ lineId, quantity: qty })
@@ -208,7 +209,7 @@ function CartPage() {
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <EthAmount amount={cart.totals.subtotalEth} showSymbol />
+                    <EthAmount amount={cartTotals.subtotalEth} showSymbol />
                   </div>
                   {cart.coupon?.code && (
                     <div className="flex justify-between text-sm">
@@ -216,18 +217,18 @@ function CartPage() {
                         Desconto ({cart.coupon?.code})
                       </span>
                       <span className="text-emerald-600 font-mono">-</span>
-                      <EthAmount amount={cart.totals.discountEth} showSymbol />
+                      <EthAmount amount={cartTotals.discountEth} showSymbol />
                     </div>
                   )}
                   <div className="flex justify-between text-sm">
                     <span className="text-muted-foreground">Taxa de rede</span>
-                    <EthAmount amount={cart.totals.networkFeeEth} showSymbol />
+                    <EthAmount amount={cartTotals.networkFeeEth} showSymbol />
                   </div>
                 </div>
                 <div className="border-t border-border pt-4">
                   <div className="flex justify-between text-lg font-mono font-bold">
                     <span>Total</span>
-                    <EthAmount amount={cart.totals.totalEth} showSymbol />
+                    <EthAmount amount={cartTotals.totalEth} showSymbol />
                   </div>
                 </div>
                 <div className="mt-6 space-y-2">
