@@ -8,10 +8,8 @@ import {
   type AddItemInput,
   type CartResponse,
 } from '@/api/contracts/cart'
-import { useAuth } from '@/app/auth'
 
 export function useCart() {
-  const { token } = useAuth()
   const queryClient = useQueryClient()
 
   const query = useQuery<CartResponse, Error>({
@@ -21,7 +19,6 @@ export function useCart() {
         method: 'GET',
         url: API_PATHS.cart.get,
       }),
-    enabled: !!token,
     staleTime: 30 * 1000,
   })
 
@@ -60,10 +57,35 @@ export function useCart() {
     },
   })
 
+  const applyCoupon = useMutation<CartResponse, Error, { code: string }>({
+    mutationFn: ({ code }) =>
+      apiRequest(CartResponseSchema, {
+        method: 'PUT',
+        url: API_PATHS.cart.coupon,
+        data: { code },
+      }),
+    onSuccess: (data) => {
+      queryClient.setQueryData(['cart'], data)
+    },
+  })
+
+  const removeCoupon = useMutation<CartResponse, Error, void>({
+    mutationFn: () =>
+      apiRequest(CartResponseSchema, {
+        method: 'DELETE',
+        url: API_PATHS.cart.coupon,
+      }),
+    onSuccess: (data) => {
+      queryClient.setQueryData(['cart'], data)
+    },
+  })
+
   return {
     ...query,
     addItem,
     updateQuantity,
     removeLine,
+    applyCoupon,
+    removeCoupon,
   }
 }

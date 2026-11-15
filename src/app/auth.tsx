@@ -12,6 +12,17 @@ import type { RegisterInput, LoginInput, UserSummary, AuthResponse } from '@/api
 import { configureApiAuth, configureGuestCart } from '@/api/client'
 
 const TOKEN_KEY = 'jungle-auth-token'
+const GUEST_CART_KEY = 'jungle-guest-cart-id'
+
+export function getGuestCartId(): string | null {
+  if (typeof localStorage === 'undefined') return null
+  let id = localStorage.getItem(GUEST_CART_KEY)
+  if (!id) {
+    id = `guest_${crypto.randomUUID().replace(/-/g, '')}`
+    localStorage.setItem(GUEST_CART_KEY, id)
+  }
+  return id
+}
 
 export function getToken(): string | null {
   if (typeof localStorage === 'undefined') return null
@@ -63,7 +74,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setState((s) => ({ ...s, user: null, token: null, isAuthenticated: false }))
     removeToken()
   })
-  configureGuestCart(() => null)
+  configureGuestCart(getGuestCartId)
 
   useEffect(() => {
     let mounted = true
