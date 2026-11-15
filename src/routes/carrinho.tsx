@@ -211,10 +211,10 @@ function CartPage() {
                     <span className="text-muted-foreground">Subtotal</span>
                     <EthAmount amount={cartTotals.subtotalEth} showSymbol />
                   </div>
-                  {cart.coupon?.code && (
+                  {cart.couponCode && (
                     <div className="flex justify-between text-sm">
                       <span className="text-emerald-600 font-mono">
-                        Desconto ({cart.coupon?.code})
+                        Desconto ({cart.couponCode})
                       </span>
                       <span className="text-emerald-600 font-mono">-</span>
                       <EthAmount amount={cartTotals.discountEth} showSymbol />
@@ -252,7 +252,7 @@ function CartPage() {
                       Aplicar
                     </Button>
                   </div>
-                  {cart.coupon?.code && (
+                  {cart.couponCode && (
                     <Button
                       type="button"
                       variant="ghost"
