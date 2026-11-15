@@ -5,6 +5,10 @@ import {
   UserSummarySchema,
   type UserSummary,
 } from '@/api/contracts/auth'
+import {
+  FavoritesResponseSchema,
+} from '@/api/contracts/favorites'
+import { type NftSummary } from '@/api/contracts/nfts'
 import { z } from 'zod'
 
 const UpdateProfileResponseSchema = z.object({
@@ -21,6 +25,11 @@ const UpsertWalletResponseSchema = z.object({
   wallet: z.any(),
 })
 
+const ToggleFavoriteResponseSchema = z.object({
+  ok: z.boolean(),
+  favorited: z.boolean(),
+})
+
 export function useAccount() {
   const queryClient = useQueryClient()
 
@@ -32,6 +41,52 @@ export function useAccount() {
         url: API_PATHS.account.profile,
       }),
     staleTime: 30 * 1000,
+  })
+
+  const getFavorites = useQuery<NftSummary[], Error>({
+    queryKey: ['favorites'],
+    queryFn: () =>
+      apiRequest(FavoritesResponseSchema, {
+        method: 'GET',
+        url: API_PATHS.favorites.list,
+      }).then((res) => res.items),
+    staleTime: 30 * 1000,
+  })
+
+  const toggleFavorite = useMutation<
+    { favorited: boolean },
+    Error,
+    { nftId: string; currentlyFavorited: boolean },
+    { previous: NftSummary[] | undefined; nftId: string; isNowFavorited: boolean } | undefined
+  >({
+    mutationFn: ({ nftId }) =>
+      apiRequest(ToggleFavoriteResponseSchema, {
+        method: 'PUT',
+        url: API_PATHS.favorites.item(nftId),
+      }),
+    onMutate: async ({ nftId, currentlyFavorited }) => {
+      await queryClient.cancelQueries({ queryKey: ['favorites'] })
+      const previous = queryClient.getQueryData<NftSummary[]>(['favorites'])
+      const isNowFavorited = !currentlyFavorited
+
+      queryClient.setQueryData<NftSummary[]>(['favorites'], (old) => {
+        const items = old ?? []
+        if (isNowFavorited) {
+          return items.some((i) => i.id === nftId) ? items : [...items, { id: nftId } as NftSummary]
+        }
+        return items.filter((i) => i.id !== nftId)
+      })
+
+      return { previous, nftId, isNowFavorited }
+    },
+    onError: (_err, _vars, context) => {
+      if (context) {
+        queryClient.setQueryData(['favorites'], context.previous)
+      }
+    },
+    onSettled: () => {
+      return queryClient.invalidateQueries({ queryKey: ['favorites'] })
+    },
   })
 
   const updateProfile = useMutation<UserSummary, Error, { username?: string; email?: string; displayName?: string; ensName?: string | null }>({
@@ -83,6 +138,12 @@ export function useAccount() {
     profile: getProfile.data,
     isProfileLoading: getProfile.isPending,
     profileError: getProfile.error,
+    favorites: getFavorites.data ?? [],
+    isFavoritesLoading: getFavorites.isPending,
+    favoritesError: getFavorites.error,
+    refetchFavorites: getFavorites.refetch,
+    toggleFavorite,
+    isTogglingFavorite: toggleFavorite.isPending,
     updateProfile,
     changePassword,
     upsertWallet,

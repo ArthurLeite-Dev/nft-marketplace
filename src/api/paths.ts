@@ -31,6 +31,7 @@ export const API_PATHS = {
   orders: {
     create: '/orders',
     detail: (id: string) => `/orders/${id}`,
+    settle: (id: string) => `/orders/${id}/settle`,
     myOrders: '/me/orders',
   },
   account: {

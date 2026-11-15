@@ -16,7 +16,7 @@ type FavoriteContext = {
   isNowFavorited: boolean
 } | undefined
 
-export function useFavorites() {
+export function useFavorites(enabled = true) {
   const queryClient = useQueryClient()
 
   const query = useQuery<NftSummary[], Error>({
@@ -27,6 +27,7 @@ export function useFavorites() {
         url: API_PATHS.favorites.list,
       }).then((res) => res.items),
     staleTime: 30 * 1000,
+    enabled,
   })
 
   const toggleFavorite = useMutation<

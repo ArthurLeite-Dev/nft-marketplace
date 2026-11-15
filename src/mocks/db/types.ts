@@ -1,6 +1,6 @@
 export type Network = 'Ethereum' | 'Polygon' | 'Base'
 
-export type EditionType = '1/1' | '1/10' | '1/50' | 'open'
+export type EditionType = 'unique_1_of_1' | 'limited_10' | 'limited_50' | 'open'
 
 export type OrderStatus = 'pending' | 'confirmed' | 'refused'
 
@@ -84,6 +84,18 @@ export interface DbNft {
   defaultEditionId: string
   createdAt: string
   editions: DbEdition[]
+  description: string
+  creator: {
+    id: string
+    name: string
+    avatarUrl?: string | null
+    verified: boolean
+  }
+  rating: {
+    average: number
+    count: number
+  }
+  gallery: DbArtwork[]
 }
 
 export interface DbCartLine {

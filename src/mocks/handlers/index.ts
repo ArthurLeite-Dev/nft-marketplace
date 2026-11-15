@@ -173,7 +173,7 @@ const REST_HANDLERS: RequestHandler[] = [
       const match = /^Bearer\s+(.+)$/i.exec(auth)
       let cart
       if (match) {
-      const result = getSessionFromToken(match[1]!)
+        const result = getSessionFromToken(match[1]!)
         if (!result) return errorResponse(401, 'SESSION_EXPIRED', 'Sessão expirada', {}, {}, false)
         cart = getOrCreateCart({ userId: result.session.userId, guestCartId: null, network: null })
         if (guestCartId) {
@@ -183,7 +183,6 @@ const REST_HANDLERS: RequestHandler[] = [
       } else {
         cart = getOrCreateCart({ userId: null, guestCartId, network: null })
       }
-      // Fallback defensivo: se o carrinho não pôde ser criado/recuperado, usa um vazio
       if (!cart) {
         cart = {
           id: 'cart_empty',

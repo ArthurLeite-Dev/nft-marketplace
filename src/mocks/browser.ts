@@ -10,8 +10,7 @@ export async function startMocking(opts?: StartOptions) {
   started = true
 
   const worker = setupWorker(...restHandlers)
-  // Seed do banco de fixtures ANTES de iniciar o worker, para garantir que
-  // os dados estejam disponíveis nas primeiras requisições interceptadas.
+
   await loadFixtures(createFixturesDb())
   await worker.start(opts)
 }

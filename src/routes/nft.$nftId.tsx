@@ -22,7 +22,7 @@ function NftDetailPage() {
 
   const { data: nft, isPending: nftPending, error: nftError } = useNft(nftId)
   const { data: related, isPending: relatedPending } = useRelatedNfts(nftId)
-  const { favorites, toggleFavorite, isToggling } = useFavorites()
+  const { favorites, toggleFavorite, isToggling } = useFavorites(!!user)
   const { addItem, isPending: addPending } = useCart()
 
   const [selectedEditionId, setSelectedEditionId] = useState(
@@ -232,7 +232,7 @@ function NftDetailPage() {
 
               <Button
                 onClick={handleToggleFavorite}
-                disabled={isToggling}
+                disabled={isToggling || !user}
                 variant="outline"
                 className="w-full"
               >
