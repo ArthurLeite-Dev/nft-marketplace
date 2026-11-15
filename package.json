@@ -60,5 +60,10 @@
     "@types/react-dom": "^19.0.0",
     "@tanstack/react-query-devtools": "^5.107.1",
     "@tanstack/react-router-devtools": "^1.167.3"
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
   }
 }

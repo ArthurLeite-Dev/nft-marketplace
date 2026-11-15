@@ -46,6 +46,14 @@ axiosInstance.interceptors.request.use((config) => {
     }
   }
 
+  // Propaga o cenário de mocks ativo para o service worker (MSW)
+  if (typeof localStorage !== 'undefined') {
+    const scenario = localStorage.getItem('jungle-mock-scenario')
+    if (scenario) {
+      config.headers['X-Mock-Scenario'] = scenario
+    }
+  }
+
   return config
 })
 
