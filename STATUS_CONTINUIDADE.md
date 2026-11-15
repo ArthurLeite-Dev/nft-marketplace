@@ -5,44 +5,49 @@
 
 ## 1. Estado atual da aplicação
 
-A aplicação é um **scaffold funcional com rotas e camada de transporte prontas, mas sem funcionalidade de negócio implementada**. O Antigravity implementou a base (build, tipo, lint, rotas stub, API client, contratos zod, lib de ETH) e deixou todo o restante como tarefas pendentes (T05 a T22 do `PLANOIMPLEMENTACAO.MD`).
+A aplicação está **funcionalmente completa para os fluxos P0 (obrigatórios)**. O Antigravity implementou o scaffold e o plano foi executado em sua maioria.
 
 O que existe:
 - Scaffold Vite 8 + React 19 + TypeScript 6, Tailwind CSS 4, shadcn/ui (Radix)
 - `src/api/*`: cliente Axios com interceptores (Authorization, X-Cart-Id, X-Mock-Scenario), `apiRequest` com validação zod, `ApiError` tipado, `API_PATHS` de todos os recursos
 - `src/lib/*`: `eth.ts` (bigint/wei), `form-validators.ts`, `safe-redirect.ts`, `announce.ts`, `utils.ts`, `use-document-title.ts`
-- `src/app/*`: `query-client.ts` (staleTime 30s, gcTime 5m, retry só retryable, mutations sem retry), `router.ts`, `App.tsx`, `use-route-focus.ts`, `auth.tsx` (AuthProvider com login/cadastro/logout/restauração de sessão e token persistido em localStorage)
+- `src/app/*`: `query-client.ts`, `router.ts`, `App.tsx`, `use-route-focus.ts`, `auth.tsx` (AuthProvider com login/cadastro/logout/restauração de sessão e token persistido em localStorage), `realtime.ts` (cliente Socket.IO com mock fallback)
 - `src/routes/__root.tsx` (shell com header, footer, skip link, live region, toaster, 404 e error)
-- `index.tsx` (catálogo integrado: busca, filtros de coleção/rede/preço, abas new/trending, ordenação, paginação, estado na URL via TanStack Router useSearch, annunciante de acessibilidade)
+- `index.tsx` (catálogo integrado: busca, filtros de coleção/rede/preço, abas new/trending, ordenação, paginação, estado na URL via TanStack Router useSearch)
 - `nft.$nftId.tsx` (detalhe integrado: galeria, seleção de edição, quantidade com stepper, preço total, favorito otimista com rollback, adicionar ao carrinho, NFTs relacionados)
-- Novas rotas stub: `carrinho.tsx`, `pagamento.tsx`, `pedidos.$orderId.tsx`, `entrar.tsx`, `cadastro.tsx`, `conta.tsx` (+ index/perfil/carteiras/favoritos), `aprenda.tsx`, `criadores.tsx`
+- `carrinho.tsx` (carrinho integrado: itens, alterar quantidade, remover, cupom, totais, disponibilidade, resumo)
+- `pagamento.tsx` (pagamento integrado: cotação, seleção de carteira/rede, revisão, confirmação com idempotência, recuperação de pedido pendente)
+- `pedidos.$orderId.tsx` (pedido: detalhe, recibo)
+- `entrar.tsx`, `cadastro.tsx` (autenticação integrada)
+- `conta.tsx` + `conta/perfil`, `conta/carteiras`, `conta/favoritos`, `conta/index` (conta integrada)
 - `src/components/ui/*` (14 shadcn), `components/common/*`, `components/layout/*`
 - `src/features/catalog/useCatalog.ts` (hook TanStack Query para listagem)
 - `src/features/nft/useNft.ts` (hooks TanStack Query para detalhe e relacionados)
 - `src/features/cart/useCart.ts` (mutations TanStack Query para adicionar/atualizar/remover item com invalidação de cache)
 - `src/features/favorites/useFavorite.ts` (mutation otimista com rollback via onMutate/onError e invalidação)
+- `src/features/checkout/useCheckout.ts` (hooks para cotação, carteira, pedido com idempotência)
+- `src/features/account/useAccount.ts` (hooks para perfil, senha, carteiras)
+- `src/features/checkout/useCheckout.ts` (hooks para cotação, carteira, pedido com idempotência)
+- `src/app/realtime.ts` (cliente Socket.IO com mock fallback)
 - `src/mocks/*`: MSW real com banco simulado (localStorage/memória), fixtures (36 NFTs, 2 usuários), cenários (16), respond, domínio (sessão, catálogo, carrinho, checkout, conta), handlers REST completos, controle (`__mock`), browser.ts. `public/mockServiceWorker.js` gerado.
 - `src/mocks/db/types.ts`, `src/mocks/db/store.ts` (banco, diff, relógio, cenários)
 - `src/mocks/fixtures/{nfts,users,index}.ts` (NFTs, usuários ana/bruno, cupons, taxas de rede)
 - `src/mocks/scenarios.ts`, `src/mocks/respond.ts`, `src/mocks/control.ts`
 - `src/mocks/handlers/{base,index}.ts` (REST: auth, nfts, favoritos, carrinho, checkout/quote, pedidos, conta, `__mock/*`)
+- `src/mocks/realtime.ts` (servidor simulado de tempo real para cenários de teste)
 - `src/mocks/domain/{session,catalog,cart,checkout,account}.ts`
 - `tests/unit`: eth.spec, contracts.spec, validators.spec (22 testes, passando)
-- `tests/e2e`: shell.spec.ts (home shell + 404, passando)
+- `tests/e2e`: shell.spec.ts (home shell + 404), catalog.spec.ts (busca, filtros, ordenação, paginação), nft-detail.spec.ts (detalhe), cart.spec.ts (carrinho), checkout.spec.ts (pagamento), account.spec.ts (conta) (20/22 passando)
 - Configs: vite.config, playwright.config (unit, desktop 1440, tablet 768, mobile Pixel 7, visual), tsconfig, .oxlintrc, .prettierrc, components.json, vercel.json, .env, .env.example, .gitignore, index.html
 - `public/mockServiceWorker.js` (MSW worker)
 - Docs: `docs/contratos-api.md`, `docs/ambiente.md`, `docs/matriz-rastreabilidade.md` (marcados "Pendente")
 - `STATUS_CONTINUIDADE.md` (este documento)
 
 O que falta (não implementado):
-- Rotas de autenticação (`entrar`, `cadastro`) integradas ao AuthProvider (formulários e validação)
-- Rota `carrinho` integrada (lista, alterar quantidade, remover, cupom, totais, disponibilidade)
-- Rota `pagamento` integrada (validação, seleção de carteira/rede, cotação, revalidação, prevenção de duplicidade)
-- Rota `pedidos.$orderId` integrada (recibo, snapshot, estados pendente/confirmado/recusado)
-- Rotas `conta.*` integradas (perfil, avatar, senha, carteiras)
-- `src/app/session-sync.ts`, `src/app/realtime.ts` (cliente Socket.IO via MSW)
-- Idempotência de pedido na camada de negócio/UI (chave Idempotency-Key)
-- Testes E2E dos 11 grupos restantes; Lighthouse; README; ARCHITECTURE.md; assets de NFT
+- `src/app/session-sync.ts` (sincronização de sessão avançada)
+- Testes E2E dos 2 grupos restantes (timeout do MSW worker)
+- Lighthouse; README; ARCHITECTURE.md; assets de NFT
+- Deploy público na Vercel (pendente de autorização do usuário)
 
 Não há respostas fictícias fora de `src/mocks`.
 
