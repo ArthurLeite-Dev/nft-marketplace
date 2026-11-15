@@ -1,0 +1,86 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import '@fontsource-variable/roboto-mono';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: #140d0a;
+  --color-foreground: #f5f1eb;
+  --color-card: #241612;
+  --color-card-foreground: #f5f1eb;
+  --color-popover: #241612;
+  --color-popover-foreground: #f5f1eb;
+  --color-primary: #d28a4c;
+  --color-primary-foreground: #140d0a;
+  --color-secondary: #2a1a10;
+  --color-secondary-foreground: #f5f1eb;
+  --color-muted: #1c120e;
+  --color-muted-foreground: #cfb28c;
+  --color-accent: #2a1a10;
+  --color-accent-foreground: #f5f1eb;
+  --color-destructive: #f0805f;
+  --color-destructive-foreground: #140d0a;
+  --color-border: #442c1a;
+  --color-input: #442c1a;
+  --color-ring: #d28a4c;
+  --color-success: #7fd19b;
+  --color-warning: #f2c14c;
+  --color-brand: #e89b55;
+  --color-surface: #241612;
+  --color-subtle-foreground: #b39463;
+
+  --radius: 0.5rem;
+  --font-sans: 'Roboto Mono Variable', ui-monospace, monospace;
+  --font-mono: 'Roboto Mono Variable', ui-monospace, monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-ring;
+  }
+}
+
+@layer utilities {
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+  .shimmer::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.06),
+      transparent
+    );
+    animation: shimmer 2s infinite;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shimmer::after {
+    animation: none;
+  }
+}
