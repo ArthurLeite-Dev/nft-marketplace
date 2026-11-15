@@ -3,7 +3,7 @@ import { CartTotalsSchema } from './cart'
 import { EthAmountSchema } from './common'
 
 export const QuoteRequestSchema = z.object({
-  network: z.enum(['Ethereum', 'Polygon']),
+  network: z.enum(['Ethereum', 'Polygon', 'Base']),
   cartVersion: z.number().int().nonnegative(),
 })
 
@@ -21,7 +21,7 @@ export const QuoteLineSnapshotSchema = z.object({
 export const QuoteResponseSchema = z.object({
   quoteId: z.string(),
   cartVersion: z.number().int().nonnegative(),
-  network: z.enum(['Ethereum', 'Polygon']),
+  network: z.enum(['Ethereum', 'Polygon', 'Base']),
   lines: z.array(QuoteLineSnapshotSchema),
   couponCode: z.string().nullable(),
   totals: CartTotalsSchema,
@@ -31,14 +31,14 @@ export const QuoteResponseSchema = z.object({
 export const WalletConnectionRequestSchema = z.object({
   address: z.string().regex(/^0x[0-9a-fA-F]{40}$/),
   provider: z.enum(['WalletConnect', 'MetaMask', 'Coinbase']),
-  network: z.enum(['Ethereum', 'Polygon']),
+  network: z.enum(['Ethereum', 'Polygon', 'Base']),
 })
 
 export const WalletConnectionResponseSchema = z.object({
   connectionId: z.string(),
   address: z.string(),
   provider: z.enum(['WalletConnect', 'MetaMask', 'Coinbase']),
-  network: z.enum(['Ethereum', 'Polygon']),
+  network: z.enum(['Ethereum', 'Polygon', 'Base']),
   connectedAt: z.string(),
   expiresAt: z.string(),
 })
@@ -49,7 +49,7 @@ export const CreateOrderRequestSchema = z.object({
   collectorProfile: z.object({
     displayName: z.string().min(1),
     username: z.string().min(3),
-    network: z.enum(['Ethereum', 'Polygon']),
+  network: z.enum(['Ethereum', 'Polygon', 'Base']),
     profileName: z.string().optional(),
     walletAddress: z.string().regex(/^0x[0-9a-fA-F]{40}$/),
     secondaryWallet: z.string().optional(),

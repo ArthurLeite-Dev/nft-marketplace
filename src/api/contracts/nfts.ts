@@ -17,7 +17,7 @@ export const NftSummarySchema = z.object({
   id: z.string(),
   name: z.string(),
   collection: z.string(),
-  network: z.enum(['Ethereum', 'Polygon']),
+  network: z.enum(['Ethereum', 'Polygon', 'Base']),
   priceEth: EthAmountSchema,
   previousPriceEth: EthAmountSchema.optional(),
   artwork: ArtworkSchema,

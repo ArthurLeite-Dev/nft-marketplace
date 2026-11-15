@@ -35,7 +35,7 @@ export const CartResponseSchema = z.object({
   version: z.number().int().nonnegative(),
   lines: z.array(CartLineItemSchema),
   coupon: CartCouponSchema.nullable(),
-  network: z.enum(['Ethereum', 'Polygon']),
+  network: z.enum(['Ethereum', 'Polygon', 'Base']),
   totals: CartTotalsSchema,
 })
 

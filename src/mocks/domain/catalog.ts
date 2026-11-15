@@ -126,13 +126,24 @@ export function getHighlights(limit = 4): DbNft[] {
 
 export function getFacets() {
   const db = getDbRaw()
-  const collections = [...new Set(db.nfts.map((n) => n.collection))].sort()
-  const networks = [...new Set(db.nfts.map((n) => n.network))]
-  const prices = db.nfts.map((n) => n.priceEth).map((p) => parseFloat(p))
+  const collectionCounts: Record<string, number> = {}
+  const networkCounts: Record<string, number> = {}
+  const prices: number[] = []
+  for (const nft of db.nfts) {
+    collectionCounts[nft.collection] = (collectionCounts[nft.collection] ?? 0) + 1
+    networkCounts[nft.network] = (networkCounts[nft.network] ?? 0) + 1
+    prices.push(parseFloat(nft.priceEth))
+  }
   return {
-    collections,
-    networks,
-    minPrice: prices.length ? Math.min(...prices) : 0,
-    maxPrice: prices.length ? Math.max(...prices) : 0,
+    collections: Object.entries(collectionCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name)),
+    networks: Object.entries(networkCounts)
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name)),
+    priceRange: {
+      min: prices.length ? Math.min(...prices) : 0,
+      max: prices.length ? Math.max(...prices) : 0,
+    },
   }
 }
