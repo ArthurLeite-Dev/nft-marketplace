@@ -13,7 +13,7 @@ import {
   removeCoupon,
   mergeGuestCart,
 } from '../domain/cart'
-import { createQuote, placeOrder, getOrder } from '../domain/checkout'
+import { createQuote, placeOrder, getOrder, settleOrder } from '../domain/checkout'
 import { updateProfile, changePassword, upsertWallet, getUser } from '../domain/account'
 import { getDbRaw } from '../db/store'
 import { getActiveScenario } from '../control'
@@ -101,7 +101,7 @@ const REST_HANDLERS: RequestHandler[] = [
       if (!nft) {
         return errorResponse(404, 'NOT_FOUND', 'NFT não encontrado', {}, { nftId: String(params.nftId ?? '') })
       }
-      return HttpResponse.json({ nft })
+      return HttpResponse.json(nft)
     }, request)
   }),
 
@@ -273,7 +273,7 @@ const REST_HANDLERS: RequestHandler[] = [
       if (!result.ok) {
         return errorResponse(result.error.status, result.error.code, result.error.message, result.error.fields, result.error.details, false)
       }
-      return HttpResponse.json({ ok: true, quote: result.quote })
+      return HttpResponse.json(result.quote)
     }, request)
   }),
 
@@ -350,6 +350,19 @@ const REST_HANDLERS: RequestHandler[] = [
       const session = checkSession(match[1]!)
       if (!session.ok) return session.response
       const result = getOrder(String(params.orderId), session.userId)
+      if (!result.ok) return errorResponse(result.error.status, result.error.code, result.error.message, {}, {}, false)
+      return HttpResponse.json({ ok: true, order: result.order })
+    }, request)
+  }),
+
+  http.post('/api/v1/orders/:orderId/settle', async ({ request, params }) => {
+    return withScenarioHandler(async () => {
+      const auth = request.headers.get('Authorization') ?? ''
+      const match = /^Bearer\s+(.+)$/i.exec(auth)
+      if (!match) return errorResponse(401, 'UNAUTHENTICATED', 'Token não fornecido', {}, {}, false)
+      const session = checkSession(match[1]!)
+      if (!session.ok) return session.response
+      const result = settleOrder(String(params.orderId ?? ''))
       if (!result.ok) return errorResponse(result.error.status, result.error.code, result.error.message, {}, {}, false)
       return HttpResponse.json({ ok: true, order: result.order })
     }, request)
