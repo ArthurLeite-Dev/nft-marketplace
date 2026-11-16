@@ -274,30 +274,4 @@ Os contratos estão definidos em `src/api/contracts/` utilizando Zod para valida
 }
 ```
 
-## Eventos de Tempo Real
-
-O cliente Socket.IO escuta os seguintes eventos:
-
-| Evento | Descrição |
-| --- | --- |
-| `nft.updated` | Preço ou disponibilidade de um NFT mudou |
-| `order.updated` | Estado de um pedido mudou (pendente → confirmado/recusado) |
-| `ledger.updated` | Evento do ledger financeiro |
-
-## Decisões de Arquitetura
-
-- **ETH como strings decimais**: Todos os valores monetários são manipulados como strings para evitar erros de ponto flutuante. Conversão para wei (bigint) apenas para cálculos internos.
-- **Idempotência de pedido**: Chave baseada em `userId:idempotencyKey` com hash estável do corpo da requisição. Mesma chave recupera o mesmo pedido; mesma chave com corpo diferente gera conflito (409).
-- **Cache isolado por usuário**: Query keys do TanStack Query incluem `userId` para isolar dados entre usuários.
-- **Atualização otimista**: Favoritos usam atualização otimista com rollback em caso de falha.
-- **Banco de mocks em localStorage**: Persistência de carrinho de visitante e sessão entre refresh. Service worker usa memória com hidratação via `__mock/restore-db`.
-
-## Limitações Conhecidas
-
-- Assets de NFT (imagens) não estão incluídos no repositório (pendente de autorização do Figma)
-- Deploy público na Vercel pendente de autorização do usuário
-- Cenários de tempo real são simulados no ambiente de demonstração
-
-## Licença
-
 Projeto desenvolvido como parte de desafio técnico.
